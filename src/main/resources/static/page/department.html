@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title>部门管理</title>
+    <link rel="stylesheet" href="../css/pintuer.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/pintuer.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios.js"></script>
+    <script src="../js/department.js"></script>
+</head>
+<body>
+<div class="panel admin-panel" id="panel">
+    <div class="panel-head"><strong class="icon-reorder"> 部门列表</strong></div>
+    <div class="padding border-bottom">
+        <ul class="search" style="padding-left:10px;">
+            <li>
+                <button type="button" class="button border-yellow" onclick="window.location.href='#add'"><span
+                        class="icon-plus-square-o"></span> 添加部门
+                </button>
+            </li>
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入搜索关键字" name="keywords" class="input"
+                       style="width:250px; line-height:17px;display:inline-block"/>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()"> 搜索</a>
+            </li>
+        </ul>
+    </div>
+    <table class="table table-hover text-center" name="list" >
+        <tr>
+            <th width="100" style="text-align:left; padding-left:20px;">序号</th>
+            <th>名称</th>
+            <th width="310">操作</th>
+        </tr>
+
+            <tr v-for="(object,index) in dept">
+                <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" value=""/>
+                    {{index+1}}
+                </td>
+                <td>{{object.deptName}}</td>
+                <td>
+                    <div class="button-group"><a class="button border-main" href="add.html"><span
+                            class="icon-edit"></span>修改</a> <a class="button border-red"><span
+                            class="icon-trash-o"></span>删除</a></div>
+                </td>
+            </tr>
+            <tr>
+
+            <tr>
+
+            <tr>
+                <td style="text-align:left; padding:19px 0;padding-left:20px;"><input type="checkbox" id="checkall"/>
+                    全选
+                </td>
+                <td colspan="7" style="text-align:left;padding-left:20px;"><a href="javascript:void(0)"
+                                                                              class="button border-red icon-trash-o"
+                                                                              style="padding:5px 15px;"
+                                                                              onclick="DelSelect()"> 删除</a>
+                    <select name="copynum" style="padding:5px 15px; border:1px solid #ddd;" onchange="changecopy(this)">
+                        <option value="10">10条/页</option>
+                        <option value="15">15条/页</option>
+                        <option value="20">20条/页</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a>首页</a>
+                        <a>上一页</a>
+                        <span class="current" v-for="page in pages">
+                        <a v-if="page == pageNum" style="background-color: #ff6600">{{page}}</a>
+                        <a v-else>{{page}}</a>
+                        </span>
+                        <a>下一页</a>
+                        <a>尾页</a>
+                    </div>
+                </td>
+            </tr>
+
+    </table>
+</div>
+<script type="text/javascript">
+    function del(id, mid) {
+        if (confirm("您确定要删除吗?")) {
+
+        }
+    }
+</script>
+<div class="panel admin-panel margin-top">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>添加部门</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" action="">
+            <div class="form-group">
+                <div class="label">
+                    <label>部门名称：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="title" data-validate="required:请输入部门"/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

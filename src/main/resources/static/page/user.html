@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="../css/pintuer.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/pintuer.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../js/axios.js"></script>
+    <script src="../js/user.js"></script>
+
+</head>
+<body>
+
+<!--V-->
+<div id="app">
+
+
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder"> 用户列表</strong></div>
+        <div class="padding border-bottom">
+            <button type="button" class="button border-yellow" onclick="window.location.href='#add'">
+                <span class="icon-plus-square-o"></span> 添加用户
+            </button>
+
+            <input type="text" placeholder="请输入搜索关键字" class="input"  v-model="likeUsername"  style="width:250px; line-height:17px;display:inline-block"/>
+            <a class="button border-main icon-search" @click="getUsersByLike()"> 搜索</a>
+        </div>
+
+        <table class="table table-hover text-center">
+            <tr>
+                <th width="20%">编号</th>
+                <th width="20%">用户</th>
+                <th width="20%">密码</th>
+                <th width="45%">操作</th>
+            </tr>
+            <tr v-for="(object,index) in users">
+                <td>{{index+1}}</td>
+                <td>{{object.username}}</td>
+                <td>{{object.password}}</td>
+                <td>
+                    <div class="button-group">
+                        <a @click="editUser(object)" class="button border-main"><span class="icon-edit"></span>修改</a>
+                        <a @click="removeUserById(object.uuid)" class="button border-red"><span class="icon-trash-o"></span>删除</a>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" style="text-align:left;padding-left:20px;">
+                    <select name="copynum" style="padding:5px 15px; border:1px solid #ddd;" v-model="pageSize" @click="getUsersByPageSize()">
+                        <option value="5">5条/页</option>
+                        <option value="10">10条/页</option>
+                        <option value="15">15条/页</option>
+                        <option value="20">20条/页</option>
+                    </select>
+                    <span>总共有{{total}}条记录</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="pagelist">
+                        <a @click="getUsersByPageNum(1)">首页</a>
+                        <a v-show="pageNum != 1" @click="getUsersByPageNum(pageNum-1)">上一页</a>
+                        <span  v-for="page in pages">
+                            <a  @click="getUsersByPageNum(page)"  v-if="page == pageNum" style="background-color: #00aa00">{{page}}</a>
+                            <a  v-else @click="getUsersByPageNum(page)">{{page}}</a>
+                        </span>
+                        <a v-show="pageNum != pages" @click="getUsersByPageNum(pageNum+1)">下一页</a>
+                        <a @click="getUsersByPageNum(pages)">尾页</a>
+                        <span>总共有{{pages}}页</span>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="panel admin-panel margin-top" id="add">
+        <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 添加用户</strong></div>
+        <div class="body-content">
+            <form id="userform" class="form-x">
+                <div class="form-group">
+                    <div class="label">
+                        <label>用户：</label>
+                    </div>
+                    <div class="field">
+                        <input v-model="user.username" type="text" class="input w50" name="username" data-validate="required:请输入用户"/>
+                        <div class="tips">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">
+                        <label>密码：</label>
+                    </div>
+                    <div class="field">
+                        <input v-model="user.password" type="password" class="input w50" name="password" value=""
+                               data-validate="required:请输入密码"/>
+                        <div class="tips">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">
+                        <label></label>
+                    </div>
+                    <div class="field">
+                        <button @click="submitUser()" class="button bg-main icon-check-square-o" type="button"> 提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
